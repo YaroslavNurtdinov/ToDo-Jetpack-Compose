@@ -1,5 +1,6 @@
 package com.nurtdinov.todocompose.navigation.destenations
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import com.nurtdinov.todocompose.ui.viewmodels.SharedViewModel
 import com.nurtdinov.todocompose.util.Constants.LIST_ARGUMENT_KEY
 import com.nurtdinov.todocompose.util.Constants.LIST_SCREEN
 
+@ExperimentalMaterialApi
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (taskId: Int) -> Unit,
     sharedViewModel: SharedViewModel

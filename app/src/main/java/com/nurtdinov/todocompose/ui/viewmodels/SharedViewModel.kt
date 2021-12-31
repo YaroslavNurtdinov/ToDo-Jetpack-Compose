@@ -7,14 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.nurtdinov.todocompose.data.Repository
 import com.nurtdinov.todocompose.data.models.ToDoTask
 import com.nurtdinov.todocompose.util.SearchAppBarState
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@ViewModelScoped
+@HiltViewModel
 class SharedViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     val searchAppBarState: MutableState<SearchAppBarState> =
