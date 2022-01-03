@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,12 +22,29 @@ import com.nurtdinov.todocompose.ui.theme.*
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    task: List<ToDoTask>,
+    tasks: List<ToDoTask>,
+    navigationToTaskScreen: (taskId: Int) -> Unit
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        DisplayTasks(
+            tasks = tasks,
+            navigationToTaskScreen = navigationToTaskScreen
+        )
+    }
+
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun DisplayTasks(
+    tasks: List<ToDoTask>,
     navigationToTaskScreen: (taskId: Int) -> Unit
 ) {
     LazyColumn {
         items(
-            items = task,
+            items = tasks,
             key = { task ->
                 task.id
             }
@@ -57,7 +73,7 @@ fun TaskItem(
             navigationToTaskScreen(toDoTask.id)
         },
 
-    ) {
+        ) {
         Column(
             modifier = Modifier
                 .padding(all = LARGE_PADDING)
@@ -80,8 +96,7 @@ fun TaskItem(
                 ) {
                     Canvas(
                         modifier = Modifier
-                            .width(PRIORITY_INDICATOR_SIZE)
-                            .height(PRIORITY_INDICATOR_SIZE)
+                            .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
                             color = toDoTask.priority.color

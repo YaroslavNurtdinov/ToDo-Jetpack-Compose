@@ -1,7 +1,6 @@
 package com.nurtdinov.todocompose.ui.screens.list
 
 
-import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -42,7 +41,7 @@ fun ListScreen(
 
         content = {
             ListContent(
-                task = allTasks,
+                tasks = allTasks,
                 navigationToTaskScreen = navigateToTaskScreen
             )
         },
