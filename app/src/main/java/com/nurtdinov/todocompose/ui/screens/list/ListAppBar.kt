@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import com.nurtdinov.todocompose.components.DisplayAlertDialog
 import com.nurtdinov.todocompose.components.PriorityItem
 import com.nurtdinov.todocompose.ui.theme.*
 import com.nurtdinov.todocompose.ui.viewmodels.SharedViewModel
@@ -48,7 +49,7 @@ fun ListAppBar(
                 },
                 onSortClick = {},
 
-                onDeleteAllClicked = {
+                onDeleteAllConfirmed = {
                     sharedViewModel.action.value = Action.DELETE_ALL
                 }
             )
@@ -84,7 +85,7 @@ fun ListAppBar(
 fun DefaultListAppBar(
     onSearchClicked: () -> Unit,
     onSortClick: (Priority) -> Unit,
-    onDeleteAllClicked: () -> Unit
+    onDeleteAllConfirmed: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -97,7 +98,7 @@ fun DefaultListAppBar(
             ListAppBarActions(
                 onSearchClicked = onSearchClicked,
                 onSortClick = onSortClick,
-                onDeleteAllClicked = onDeleteAllClicked
+                onDeleteAllConfirmed = onDeleteAllConfirmed
             )
         },
         backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor
@@ -109,11 +110,21 @@ fun DefaultListAppBar(
 fun ListAppBarActions(
     onSearchClicked: () -> Unit,
     onSortClick: (Priority) -> Unit,
-    onDeleteAllClicked: () -> Unit
+    onDeleteAllConfirmed: () -> Unit
 ) {
+    var openDialog by remember { mutableStateOf(false) }
+
+    DisplayAlertDialog(
+        title = stringResource(id = R.string.delete_all_tasks),
+        message = stringResource(id = R.string.delete_all_tasks_confirmation),
+        openDialog = openDialog,
+        closeDialog = { openDialog = false },
+        onYesClicked = { onDeleteAllConfirmed()  }
+    )
+
     SearchActions(onSearchClicked = onSearchClicked)
     SortAction(onSortClick = onSortClick)
-    DeleteAllAction(onDeleteAllClicked = onDeleteAllClicked)
+    DeleteAllAction(onDeleteAllConfirmed = { openDialog = true })
 }
 
 @Composable
@@ -168,7 +179,9 @@ fun SortAction(onSortClick: (Priority) -> Unit) {
 }
 
 @Composable
-fun DeleteAllAction(onDeleteAllClicked: () -> Unit) {
+fun DeleteAllAction(
+    onDeleteAllConfirmed: () -> Unit
+) {
     var expended by remember { mutableStateOf(false) }
 
     IconButton(onClick = { expended = true }) {
@@ -183,7 +196,7 @@ fun DeleteAllAction(onDeleteAllClicked: () -> Unit) {
         ) {
             DropdownMenuItem(onClick = {
                 expended = false
-                onDeleteAllClicked()
+                onDeleteAllConfirmed()
             }
             ) {
                 Text(
@@ -301,7 +314,7 @@ private fun DefaultListAppBarPreview() {
     DefaultListAppBar(
         onSearchClicked = {},
         onSortClick = {},
-        onDeleteAllClicked = {}
+        onDeleteAllConfirmed = {}
     )
 
 }
