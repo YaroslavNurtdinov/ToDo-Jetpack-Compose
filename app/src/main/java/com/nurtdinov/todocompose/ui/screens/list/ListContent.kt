@@ -18,22 +18,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nurtdinov.todocompose.data.models.Priority
 import com.nurtdinov.todocompose.data.models.ToDoTask
 import com.nurtdinov.todocompose.ui.theme.*
+import com.nurtdinov.todocompose.util.RequestState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    tasks: List<ToDoTask>,
+    tasks: RequestState<List<ToDoTask>>,
     navigationToTaskScreen: (taskId: Int) -> Unit
 ) {
-    if (tasks.isEmpty()) {
-        EmptyContent()
-    } else {
-        DisplayTasks(
-            tasks = tasks,
-            navigationToTaskScreen = navigationToTaskScreen
-        )
+    if(tasks is RequestState.Success){
+        if (tasks.data.isEmpty()) {
+            EmptyContent()
+        } else {
+            DisplayTasks(
+                tasks = tasks.data,
+                navigationToTaskScreen = navigationToTaskScreen
+            )
+        }
     }
-
 }
 
 @ExperimentalMaterialApi
