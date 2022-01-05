@@ -19,22 +19,46 @@ import com.nurtdinov.todocompose.data.models.Priority
 import com.nurtdinov.todocompose.data.models.ToDoTask
 import com.nurtdinov.todocompose.ui.theme.*
 import com.nurtdinov.todocompose.util.RequestState
+import com.nurtdinov.todocompose.util.SearchAppBarState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    tasks: RequestState<List<ToDoTask>>,
+    allTasks: RequestState<List<ToDoTask>>,
+    searchedTasks: RequestState<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
     navigationToTaskScreen: (taskId: Int) -> Unit
 ) {
-    if(tasks is RequestState.Success){
-        if (tasks.data.isEmpty()) {
-            EmptyContent()
-        } else {
-            DisplayTasks(
-                tasks = tasks.data,
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (searchedTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = searchedTasks.data,
                 navigationToTaskScreen = navigationToTaskScreen
             )
         }
+    } else {
+        if (allTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = allTasks.data,
+                navigationToTaskScreen = navigationToTaskScreen
+            )
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun HandleListContent(
+    tasks: List<ToDoTask>,
+    navigationToTaskScreen: (taskId: Int) -> Unit
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        DisplayTasks(
+            tasks = tasks,
+            navigationToTaskScreen = navigationToTaskScreen
+        )
     }
 }
 
