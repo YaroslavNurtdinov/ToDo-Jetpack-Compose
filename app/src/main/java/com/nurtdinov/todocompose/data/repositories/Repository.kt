@@ -1,4 +1,4 @@
-package com.nurtdinov.todocompose.data
+package com.nurtdinov.todocompose.data.repositories
 
 import com.nurtdinov.todocompose.data.database.ToDoDao
 import com.nurtdinov.todocompose.data.models.ToDoTask
