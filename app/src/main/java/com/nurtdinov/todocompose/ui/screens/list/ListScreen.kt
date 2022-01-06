@@ -1,6 +1,7 @@
 package com.nurtdinov.todocompose.ui.screens.list
 
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -14,6 +15,7 @@ import com.nurtdinov.todocompose.util.Action
 import com.nurtdinov.todocompose.util.SearchAppBarState
 import kotlinx.coroutines.launch
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun ListScreen(

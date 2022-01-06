@@ -1,6 +1,7 @@
 package com.nurtdinov.todocompose.navigation.destenations
 
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
@@ -13,6 +14,7 @@ import com.nurtdinov.todocompose.util.Constants.LIST_ARGUMENT_KEY
 import com.nurtdinov.todocompose.util.Constants.LIST_SCREEN
 import com.nurtdinov.todocompose.util.toAction
 
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (taskId: Int) -> Unit,
