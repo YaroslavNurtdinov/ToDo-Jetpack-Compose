@@ -1,19 +1,27 @@
 package com.nurtdinov.todocompose.navigation.destenations
 
+
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideOutVertically
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
 import com.nurtdinov.todocompose.ui.screens.splash.SplashScreen
 import com.nurtdinov.todocompose.util.Constants.SPLASH_SCREEN
 
+
 @ExperimentalAnimationApi
-@ExperimentalMaterialApi
 fun NavGraphBuilder.splashComposable(
     navigateToListScreen: () -> Unit
 ) {
     composable(
         route = SPLASH_SCREEN,
+        exitTransition = { _, _ ->
+            slideOutVertically(
+                targetOffsetY = { fullHeight -> -fullHeight },
+                animationSpec = tween(durationMillis = 300)
+            )
+        },
     ) {
         SplashScreen(navigateToListScreen = navigateToListScreen)
     }
