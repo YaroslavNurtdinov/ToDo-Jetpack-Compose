@@ -31,7 +31,6 @@ import com.nurtdinov.todocompose.ui.theme.*
 import com.nurtdinov.todocompose.ui.viewmodels.SharedViewModel
 import com.nurtdinov.todocompose.util.Action
 import com.nurtdinov.todocompose.util.SearchAppBarState
-import com.nurtdinov.todocompose.util.TrailingIconState
 
 
 @Composable
@@ -47,7 +46,7 @@ fun ListAppBar(
                     sharedViewModel.searchAppBarState.value =
                         SearchAppBarState.OPENED
                 },
-                onSortClick = { sharedViewModel.persistSortingState(it)},
+                onSortClick = { sharedViewModel.persistSortingState(it) },
 
                 onDeleteAllConfirmed = {
                     sharedViewModel.action.value = Action.DELETE_ALL
@@ -119,7 +118,7 @@ fun ListAppBarActions(
         message = stringResource(id = R.string.delete_all_tasks_confirmation),
         openDialog = openDialog,
         closeDialog = { openDialog = false },
-        onYesClicked = { onDeleteAllConfirmed()  }
+        onYesClicked = { onDeleteAllConfirmed() }
     )
 
     SearchActions(onSearchClicked = onSearchClicked)
@@ -153,7 +152,15 @@ fun SortAction(onSortClick: (Priority) -> Unit) {
             expanded = expended,
             onDismissRequest = { expended = false }
         ) {
-            DropdownMenuItem(onClick = {
+            Priority.values().slice(setOf(0,2,3)).forEach { priority ->
+                DropdownMenuItem(onClick = {
+                    expended = false
+                    onSortClick(priority)
+                }) {
+                    PriorityItem(priority)
+                }
+            }
+           /* DropdownMenuItem(onClick = {
                 expended = false
                 onSortClick(Priority.LOW)
             }) {
@@ -173,7 +180,7 @@ fun SortAction(onSortClick: (Priority) -> Unit) {
             }) {
                 PriorityItem(priority = Priority.NONE)
 
-            }
+            }*/
         }
     }
 }
@@ -220,10 +227,6 @@ fun SearchAppBar(
     onSearchClicked: (String) -> Unit
 ) {
 
-    var trailingIconState by remember {
-        mutableStateOf(TrailingIconState.READY_TO_DELETE)
-    }
-
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -264,19 +267,10 @@ fun SearchAppBar(
             },
             trailingIcon = {
                 IconButton(onClick = {
-                    when (trailingIconState) {
-                        TrailingIconState.READY_TO_DELETE -> {
-                            onTextChange("")
-                            trailingIconState = TrailingIconState.READY_TO_CLOSE
-                        }
-                        TrailingIconState.READY_TO_CLOSE -> {
-                            if (text.isNotEmpty()) {
-                                onTextChange("")
-                            } else {
-                                onCloseClicked()
-                                trailingIconState = TrailingIconState.READY_TO_DELETE
-                            }
-                        }
+                    if (text.isNotEmpty()) {
+                        onTextChange("")
+                    } else {
+                        onCloseClicked()
                     }
                 }
                 ) {
