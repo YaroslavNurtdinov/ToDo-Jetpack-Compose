@@ -24,11 +24,6 @@ fun ListScreen(
     sharedViewModel: SharedViewModel
 ) {
 
-    LaunchedEffect(key1 = true) {
-        sharedViewModel.getAllTask()
-        sharedViewModel.readSortState()
-    }
-
     LaunchedEffect(key1 = action ){
         sharedViewModel.handleDatabaseActions(action = action)
     }
